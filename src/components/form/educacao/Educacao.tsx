@@ -12,7 +12,7 @@ export function Educacao() {
     return (
         <>
             {/* Título da seção */}
-            <h2>Educação</h2>
+            <h2 className="text-xl font-bold mb-4">Educacao</h2>
 
             {/* Aqui vai o .map da lista de formações */}
             {/* Exemplo:
