@@ -1,6 +1,7 @@
 // Tela Principal (Split-Screen)
 
 import { DadosPessoais } from "../components/form/DadosPessoais";
+import { Educacao } from "../components/form/educacao/Educacao";
 import { Experiencias } from "../components/form/experiencias/Experiencias";
 import { Habilidades } from "../components/form/habilidades/Habilidades";
 import { Preview } from "../components/form/preview/Preview";
@@ -18,6 +19,7 @@ export const Home = () => {
                     <DadosPessoais />
                     <Habilidades />
                     <Experiencias />
+                    <Educacao />
                 </div>
 
                 {/* Coluna direita - Preview */}
