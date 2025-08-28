@@ -1,0 +1,5 @@
+export function InputHabilidades() {
+    return (
+        <></>
+    )
+}
