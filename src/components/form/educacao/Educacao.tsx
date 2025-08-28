@@ -11,18 +11,7 @@
 export function Educacao() {
     return (
         <>
-            {/* Título da seção */}
             <h2>Educação</h2>
-
-            {/* Aqui vai o .map da lista de formações */}
-            {/* Exemplo:
-            {educacoes.map((edu, index) => (
-                <EducacaoItem key={index} />
-            ))}
-      */}
-
-            {/* Botão para adicionar uma nova formação */}
-            {/* <button>+ Adicionar Formação</button> */}
         </>
     )
 }
