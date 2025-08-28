@@ -1,0 +1,5 @@
+export function Habilidades() {
+    return (
+        <></>
+    )
+}
