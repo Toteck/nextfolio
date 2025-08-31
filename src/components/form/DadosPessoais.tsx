@@ -91,9 +91,7 @@ export function DadosPessoais() {
                     onChange={(e) => handleChange("useSocialName", e.target.checked)}
                     className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                 />
-                <label className="text-sm text-gray-700">
-                    Usar Nome Social no currículo
-                </label>
+                <label className="text-sm text-gray-700">Usar Nome Social no currículo</label>
             </div>
 
             <InputEmail
