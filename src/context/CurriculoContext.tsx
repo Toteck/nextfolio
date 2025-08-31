@@ -14,6 +14,7 @@ type PersonalData = {
 type ResumeContextType = {
   personalData: PersonalData;
   setPersonalData: React.Dispatch<React.SetStateAction<PersonalData>>;
+  handleChange: (field: string, value: any) => void; // Função para atualizar campos individuais
 };
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -28,6 +29,14 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     linkedin: "",
     summary: "",
   });
+
+  //função centralizada para atualizar campos
+  const handleChange = (field: string, value: any) => {
+    setPersonalData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  }
 
   return (
     <ResumeContext.Provider value={{ personalData, setPersonalData }}>

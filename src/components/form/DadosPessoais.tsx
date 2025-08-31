@@ -4,11 +4,10 @@ import { InputPhone } from "./inputs/InputPhone";
 import { InputText } from "./inputs/InputText";
 import { TextAreaResumo } from "./inputs/TextAreaResumo";
 import { useContext } from "react";
-import { CurriculoContext } from "../../context/CurriculoContext";
+import { useResume } from "../../context/curriculoContext"; ;  // corrigido hook customizado
 
 export function DadosPessoais() {
-    const { personalData, handleChange } = useContext(CurriculoContext);
-
+    const { personalData, setPersonalData } = useResume();
     const [charCount, setCharCount] = useState(personalData.summary.length);
     const maxLength = 500;
 
