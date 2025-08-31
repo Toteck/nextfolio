@@ -39,7 +39,7 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }
 
   return (
-    <ResumeContext.Provider value={{ personalData, setPersonalData }}>
+    <ResumeContext.Provider value={{ personalData, setPersonalData, handleChange  }}>
       {children}
     </ResumeContext.Provider>
   );
