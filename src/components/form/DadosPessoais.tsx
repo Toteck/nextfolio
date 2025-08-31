@@ -57,11 +57,17 @@ export function DadosPessoais() {
                 onChange={(value) => handleChange("linkedin", value)}
             />
 
-            <TextAreaResumo
-                label="Resumo profissional"
-                value={personalData.summary}
-                onChange={(value) => handleChange("summary", value)}
-            />
+            {/* Resumo profissional com contador de carácteres*/}
+            <div className="flex flex-col">
+                <TextAreaResumo
+                    label="Resumo profissional"
+                    value={personalData.summary}
+                     onChange={handleResumoChange}
+             />
+                <span className="text-sm text-gray-500 mt-1">
+                    {charCount}/{maxLength} caracteres
+                </span>
+            </div>
         </div>
     );
 }
