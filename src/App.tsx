@@ -1,5 +1,5 @@
 import { Home } from "./pages/Home.js";
-import { ResumeProvider } from "./curriculoContext";
+import { ResumeProvider } from "./context/CurriculoContext";
 
 export default function App() {
   return (
