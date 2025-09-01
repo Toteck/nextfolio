@@ -1,13 +1,16 @@
+// importações corrigidas, adicionando useState e useEffect
+import React, { useState, useEffect } from "react";  
+import { useResume } from "../../context/CurriculoContext";
 import { InputEmail } from "./inputs/InputEmail";
 import { InputLinkedIn } from "./inputs/InputLinkedIn";
 import { InputPhone } from "./inputs/InputPhone";
 import { InputText } from "./inputs/InputText";
 import { TextAreaResumo } from "./inputs/TextAreaResumo";
 import { useContext } from "react";
-import { useResume } from "../../context/curriculoContext"; ;  // corrigido hook customizado
 
 export function DadosPessoais() {
-    const { personalData, setPersonalData } = useResume();
+    const { personalData, handleChange } = useResume();
+    //contador de caracteres do resumo profissional
     const [charCount, setCharCount] = useState(personalData.summary.length);
     const maxLength = 500;
 
