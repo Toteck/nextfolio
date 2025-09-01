@@ -6,7 +6,6 @@ import { InputLinkedIn } from "./inputs/InputLinkedIn";
 import { InputPhone } from "./inputs/InputPhone";
 import { InputText } from "./inputs/InputText";
 import { TextAreaResumo } from "./inputs/TextAreaResumo";
-import { useContext } from "react";
 
 export function DadosPessoais() {
     const { personalData, handleChange } = useResume();
@@ -41,19 +40,14 @@ export function DadosPessoais() {
           fullName: value.trim() === "" ? "Nome obrigatório" : "",
         }));
         break;
-      case "email":
+        case "email":
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         setErrors((prev) => ({
           ...prev,
-          email:
-            value.trim() === ""
-              ? "Email obrigatório"
-              : !emailRegex.test(value)
-              ? "Formato de email inválido"
-              : "",
+          email: value.trim() === "" ? "Email obrigatório" : !emailRegex.test(value) ? "Formato de email inválido" : "",
         }));
         break;
-      case "phone":
+        case "phone":
         setErrors((prev) => ({
           ...prev,
           phone: value.trim() === "" ? "Telefone obrigatório" : "",
@@ -74,7 +68,7 @@ export function DadosPessoais() {
             <InputText
                 label="Nome completo *"
                 value={personalData.fullName}
-                onChange={(value) => handleChange("fullName", value)}
+                onChange={(value) => handleChangeAndValidate("fullName", value)}
             />
             {errors.fullName && <span className="text-sm text-red-500">{errors.fullName}</span>}
 
@@ -93,7 +87,7 @@ export function DadosPessoais() {
                     onChange={(e) => handleChange("useSocialName", e.target.checked)}
                     className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                 />
-                <label className="text-sm text-gray-700">Usar Nome Social no currículo</label>
+                <label className="text-sm text-gray-700">Usar Nome Social</label>
             </div>
 
             <InputEmail
@@ -124,9 +118,7 @@ export function DadosPessoais() {
                     value={personalData.summary}
                     onChange={handleResumoChange}
              />
-                <span className="text-sm text-gray-500 mt-1">
-                    {charCount}/{maxLength} caracteres
-                </span>
+                
             </div>
         </div>
     );
