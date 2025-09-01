@@ -9,11 +9,12 @@ export function InputLinkedIn({ label, value, onChange }: FormInputProps) {
         {label}
       </label>
       <input
-        type="url" 
+        type="url"
         id={inputId}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder={`Digite seu ${label.toLowerCase()}`}
       />
     </div>
   );
