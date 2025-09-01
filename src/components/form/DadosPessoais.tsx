@@ -9,6 +9,10 @@ import { CurriculoContext } from "../../context/CurriculoContext";
 export function DadosPessoais() {
     const { personalData, handleChange } = useContext(CurriculoContext);
 
+    const [charCount, setCharCount] = useState(personalData.summary.length);
+    const maxLength = 500;
+
+
     return (
         <div className="space-y-4">
             <h2 className="text-xl font-bold mb-4">Dados Pessoais</h2>
@@ -62,7 +66,7 @@ export function DadosPessoais() {
                 <TextAreaResumo
                     label="Resumo profissional"
                     value={personalData.summary}
-                     onChange={handleResumoChange}
+                    onChange={handleResumoChange}
              />
                 <span className="text-sm text-gray-500 mt-1">
                     {charCount}/{maxLength} caracteres
