@@ -75,6 +75,7 @@ export function DadosPessoais() {
                 label="Nome completo *"
                 value={personalData.fullName}
                 onChange={(value) => handleChange("fullName", value)}
+                placeholder="Digite seu nome completo"
             />
             {errors.fullName && <span className="text-sm text-red-500">{errors.fullName}</span>}
 
