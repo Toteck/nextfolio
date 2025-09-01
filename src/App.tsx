@@ -1,9 +1,11 @@
-import { Home } from "./pages/Home.js";
+import Habilidades from "./components/Habilidades/Habilidades";
+import Preview from "./components/Preview";
 
 export default function App() {
   return (
-    <>
-      <Home />
-    </>
-  )
+    <main className="p-6 grid grid-cols-2 gap-6">
+      <Habilidades />
+      <Preview />
+    </main>
+  );
 }

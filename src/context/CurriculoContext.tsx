@@ -1,43 +1,85 @@
-// Estado Global do curriculo
 import React, { createContext, useState, useContext } from "react";
 
+// 🔹 Tipo dos dados pessoais
 type PersonalData = {
   fullName: string;
   socialName: string;
-  useSocialName: boolean;   // ← novo campo
+  useSocialName: boolean;
   email: string;
   phone: string;
   linkedin: string;
   summary: string;
 };
 
-type ResumeContextType = {
-  personalData: PersonalData;
-  setPersonalData: React.Dispatch<React.SetStateAction<PersonalData>>;
+// 🔹 Tipo das habilidades
+type Habilidade = {
+  nome: string;
+  nivel: string;
 };
 
-const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
+// 🔹 O que o contexto vai disponibilizar
+type CurriculoContextType = {
+  personalData: PersonalData;
+  handleChange: (field: keyof PersonalData, value: string | boolean) => void;
+  habilidades: Habilidade[];
+  adicionarHabilidade: (h: Habilidade) => void;
+  removerHabilidade: (index: number) => void;
+};
 
-export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Criação do contexto
+export const CurriculoContext = createContext<CurriculoContextType | undefined>(undefined);
+
+// Provider
+export const CurriculoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Estado para os dados pessoais
   const [personalData, setPersonalData] = useState<PersonalData>({
     fullName: "",
     socialName: "",
-    useSocialName: false,   // Caso de não usar
+    useSocialName: false,
     email: "",
     phone: "",
     linkedin: "",
     summary: "",
   });
 
+  // Estado para as habilidades
+  const [habilidades, setHabilidades] = useState<Habilidade[]>([]);
+
+  // ✅ Função para atualizar os dados pessoais dinamicamente
+  const handleChange = (field: keyof PersonalData, value: string | boolean) => {
+    setPersonalData({
+      ...personalData,
+      [field]: value,
+    });
+  };
+
+  // Funções para habilidades
+  const adicionarHabilidade = (h: Habilidade) => {
+    setHabilidades([...habilidades, h]);
+  };
+
+  const removerHabilidade = (index: number) => {
+    setHabilidades(habilidades.filter((_, i) => i !== index));
+  };
+
   return (
-    <ResumeContext.Provider value={{ personalData, setPersonalData }}>
+    <CurriculoContext.Provider
+      value={{
+        personalData,
+        handleChange,
+        habilidades,
+        adicionarHabilidade,
+        removerHabilidade,
+      }}
+    >
       {children}
-    </ResumeContext.Provider>
+    </CurriculoContext.Provider>
   );
 };
 
-export const useResume = () => {
-  const context = useContext(ResumeContext);
-  if (!context) throw new Error("useResume deve ser usado dentro de ResumeProvider");
+// Hook para usar o contexto
+export const useCurriculo = () => {
+  const context = useContext(CurriculoContext);
+  if (!context) throw new Error("useCurriculo deve ser usado dentro de CurriculoProvider");
   return context;
 };
