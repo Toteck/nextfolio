@@ -1,5 +1,5 @@
 // Tela Principal (Split-Screen)
-
+import React from "react";
 import { DadosPessoais } from "../components/form/DadosPessoais";
 import { Educacao } from "../components/form/educacao/Educacao";
 import { Experiencias } from "../components/form/experiencias/Experiencias";

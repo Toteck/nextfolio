@@ -1,14 +1,16 @@
+// importações corrigidas, adicionando useState e useEffect
+import React, { useState, useEffect } from "react";  
+import { useResume } from "../../context/CurriculoContext";
 import { InputEmail } from "./inputs/InputEmail";
 import { InputLinkedIn } from "./inputs/InputLinkedIn";
 import { InputPhone } from "./inputs/InputPhone";
 import { InputText } from "./inputs/InputText";
 import { TextAreaResumo } from "./inputs/TextAreaResumo";
 import { useContext } from "react";
-import { CurriculoContext } from "../../context/CurriculoContext";
 
 export function DadosPessoais() {
-    const { personalData, handleChange } = useContext(CurriculoContext);
-
+    const { personalData, handleChange } = useResume();
+    //contador de caracteres do resumo profissional
     const [charCount, setCharCount] = useState(personalData.summary.length);
     const maxLength = 500;
 
@@ -91,9 +93,7 @@ export function DadosPessoais() {
                     onChange={(e) => handleChange("useSocialName", e.target.checked)}
                     className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                 />
-                <label className="text-sm text-gray-700">
-                    Usar Nome Social no currículo
-                </label>
+                <label className="text-sm text-gray-700">Usar Nome Social no currículo</label>
             </div>
 
             <InputEmail
