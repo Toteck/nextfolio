@@ -73,3 +73,12 @@ export const useResume = () => {
     throw new Error("useResume deve ser usado dentro de ResumeProvider");
   return context;
 };
+
+export type Formacao = {
+  id: string;
+  instituicao: string;
+  curso: string;
+  anoInicio: string;
+  anoFim: string;
+  status: "concluido" | "em_curso" | "incompleto" | ""; // ⬅️ Adicione o novo campo aqui
+};

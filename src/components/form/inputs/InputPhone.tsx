@@ -8,7 +8,7 @@ export function InputPhone({ label, value, onChange }: FormInputProps) {
         {label}
       </label>
       <input
-        type="tel" // Use o tipo 'tel' para telefones
+        type="tel" 
         id={inputId}
         value={value}
         onChange={(e) => onChange(e.target.value)}

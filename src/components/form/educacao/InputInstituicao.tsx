@@ -1,5 +1,5 @@
 
-import { InputText } from "../inputs/InputText"; // Ajuste o caminho se necessário
+import { InputTextEducacao } from "./InputTextEducacao"; // Ajuste o caminho se necessário
 
 interface InputInstituicaoProps {
   value: string;
@@ -8,7 +8,7 @@ interface InputInstituicaoProps {
 
 export function InputInstituicao({ value, onChange }: InputInstituicaoProps) {
   return (
-    <InputText
+    <InputTextEducacao
       label="Instituição"
       value={value}
       onChange={onChange}
