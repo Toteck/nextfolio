@@ -1,11 +1,8 @@
-import React from "react";
 import { DadosPessoais } from "../components/form/DadosPessoais";
 import { Educacao } from "../components/form/educacao/Educacao";
 import { Experiencias } from "../components/form/experiencias/Experiencias";
 import { Habilidades } from "../components/form/habilidades/Habilidades";
 import { Preview } from "../components/form/preview/Preview";
-
-
 import { ResumeProvider } from "../context/CurriculoContext";
 
 export const Home = () => {
@@ -31,6 +28,5 @@ export const Home = () => {
         </div>
       </div>
     </ResumeProvider>
-    // ⬅️ Feche o Provider aqui
   );
 };
