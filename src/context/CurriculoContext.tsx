@@ -7,8 +7,8 @@ export type Formacao = {
   curso: string;
   anoInicio: string;
   anoFim: string;
+  status: "concluido" | "em_curso" | "incompleto" | ""; // ⬅️ Adicione o novo campo aqui
 };
-
 export type PersonalData = {
   fullName: string;
   socialName: string;
@@ -74,11 +74,3 @@ export const useResume = () => {
   return context;
 };
 
-export type Formacao = {
-  id: string;
-  instituicao: string;
-  curso: string;
-  anoInicio: string;
-  anoFim: string;
-  status: "concluido" | "em_curso" | "incompleto" | ""; // ⬅️ Adicione o novo campo aqui
-};
