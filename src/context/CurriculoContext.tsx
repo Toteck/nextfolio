@@ -1,10 +1,18 @@
 // Estado Global do curriculo
 import React, { createContext, useState, useContext } from "react";
 
-type PersonalData = {
+export type Formacao = {
+  id: string;
+  instituicao: string;
+  curso: string;
+  anoInicio: string;
+  anoFim: string;
+};
+
+export type PersonalData = {
   fullName: string;
   socialName: string;
-  useSocialName: boolean;   // ← novo campo
+  useSocialName: boolean;
   email: string;
   phone: string;
   linkedin: string;
@@ -14,32 +22,46 @@ type PersonalData = {
 type ResumeContextType = {
   personalData: PersonalData;
   setPersonalData: React.Dispatch<React.SetStateAction<PersonalData>>;
-  handleChange: (field: string, value: any) => void; // Função para atualizar campos individuais
+
+  educacao: Formacao[];
+  setEducacao: React.Dispatch<React.SetStateAction<Formacao[]>>;
+  handleChange: (field: keyof PersonalData, value: any) => void;
 };
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
 
-export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [personalData, setPersonalData] = useState<PersonalData>({
     fullName: "",
     socialName: "",
-    useSocialName: false,   // Caso de não usar
+    useSocialName: false,
     email: "",
     phone: "",
     linkedin: "",
     summary: "",
   });
 
-  //função centralizada para atualizar campos
+  const [educacao, setEducacao] = useState<Formacao[]>([]);
+
   const handleChange = (field: string, value: any) => {
     setPersonalData((prev) => ({
       ...prev,
       [field]: value,
     }));
-  }
+  };
 
   return (
-    <ResumeContext.Provider value={{ personalData, setPersonalData, handleChange  }}>
+    <ResumeContext.Provider
+      value={{
+        personalData,
+        setPersonalData,
+        educacao,
+        setEducacao,
+        handleChange,
+      }}
+    >
       {children}
     </ResumeContext.Provider>
   );
@@ -47,6 +69,16 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
 export const useResume = () => {
   const context = useContext(ResumeContext);
-  if (!context) throw new Error("useResume deve ser usado dentro de ResumeProvider");
+  if (!context)
+    throw new Error("useResume deve ser usado dentro de ResumeProvider");
   return context;
+};
+
+export type Formacao = {
+  id: string;
+  instituicao: string;
+  curso: string;
+  anoInicio: string;
+  anoFim: string;
+  status: "concluido" | "em_curso" | "incompleto" | ""; // ⬅️ Adicione o novo campo aqui
 };

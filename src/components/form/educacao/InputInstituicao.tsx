@@ -1,11 +1,17 @@
-// src/components/form/educacao/InputInstituicao.tsx
 
-// Este componente é um input controlado para o nome da instituição de ensino.
-// Deve receber props como: value e onChange (vindas do Context ou passadas do pai).
-// Exemplo de uso: <InputInstituicao value={edu.instituicao} onChange={...} />
+import { InputTextEducacao } from "./InputTextEducacao"; // Ajuste o caminho se necessário
 
-export function InputInstituicao() {
-    return (
-        <></>
-    )
+interface InputInstituicaoProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+export function InputInstituicao({ value, onChange }: InputInstituicaoProps) {
+  return (
+    <InputTextEducacao
+      label="Instituição"
+      value={value}
+      onChange={onChange}
+    />
+  );
 }

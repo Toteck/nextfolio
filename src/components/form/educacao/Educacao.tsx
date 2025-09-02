@@ -1,28 +1,59 @@
-// src/components/form/educacao/Educacao.tsx
-
-// Este componente representa a SEÇÃO DE EDUCAÇÃO no formulário.
-// Ele é responsável por:
-// - Mostrar a lista dinâmica de formações adicionadas (usando .map para renderizar EducacaoItem).
-// - Exibir um botão "+ Adicionar Formação" que cria um novo item na lista.
-// - Controlar a renderização de múltiplas instâncias de EducacaoItem.
-// Obs: O estado (lista de educações) deve vir do Contexto global (CurriculoContext)
-// ou pode ser passado como prop (data, setData).
+import type { Formacao } from "../../../context/CurriculoContext";
+import { useResume } from "../../../context/CurriculoContext";
+import { FormacaoItem } from "./FormacaoItem"
 
 export function Educacao() {
-    return (
-        <>
-            {/* Título da seção */}
-            <h2 className="text-xl font-bold mb-4">Educacao</h2>
+  const { educacao, setEducacao } = useResume();
 
-            {/* Aqui vai o .map da lista de formações */}
-            {/* Exemplo:
-            {educacoes.map((edu, index) => (
-                <EducacaoItem key={index} />
-            ))}
-      */}
+  const generateUniqueId = () => {
+    return `${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+  };
 
-            {/* Botão para adicionar uma nova formação */}
-            {/* <button>+ Adicionar Formação</button> */}
-        </>
-    )
+  const handleAdd = () => {
+    setEducacao((prevEducacao) => [
+      ...prevEducacao,
+      {
+        id: generateUniqueId(), 
+        instituicao: "",
+        curso: "",
+        anoInicio: "",
+        anoFim: "",
+      },
+    ]);
+  };
+
+  const handleRemove = (id: string) => {
+    setEducacao((prevEducacao) =>
+      prevEducacao.filter((item) => item.id !== id)
+    );
+  };
+
+  const handleChange = (id: string, field: keyof Formacao, value: string) => {
+    setEducacao((prevEducacao) =>
+      prevEducacao.map((item) =>
+        item.id === id ? { ...item, [field]: value } : item
+      )
+    );
+  };
+
+  return (
+    <div className="space-y-4">
+      <h2 className="text-xl font-bold mb-4">Formação Acadêmica</h2>
+      {educacao.map((item) => (
+        <FormacaoItem
+          key={item.id}
+          item={item}
+          onChange={(field, value) => handleChange(item.id, field, value)}
+          onRemove={() => handleRemove(item.id)}
+        />
+      ))}
+      <button
+        type="button"
+        onClick={handleAdd}
+        className="w-full text-blue-500 border border-blue-500 rounded p-2 hover:bg-blue-50"
+      >
+        Adicionar Formação
+      </button>
+    </div>
+  );
 }
