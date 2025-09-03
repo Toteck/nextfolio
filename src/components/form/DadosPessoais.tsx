@@ -1,12 +1,12 @@
 // importações corrigidas, adicionando useState e useEffect
 import React, { useState, useEffect } from "react";  
 import { useResume } from "../../context/CurriculoContext";
+import type { PersonalData } from "../../context/CurriculoContext";
 import { InputEmail } from "./inputs/InputEmail";
 import { InputLinkedIn } from "./inputs/InputLinkedIn";
 import { InputPhone } from "./inputs/InputPhone";
 import { InputText } from "./inputs/InputText";
 import { TextAreaResumo } from "./inputs/TextAreaResumo";
-import { useContext } from "react";
 
 export function DadosPessoais() {
     const { personalData, handleChange } = useResume();
@@ -62,10 +62,13 @@ export function DadosPessoais() {
     }
   };
 
-  const handleChangeAndValidate = (field: string, value: string) => {
-    handleChange(field, value);
+  const handleChangeAndValidate = (
+    field: keyof PersonalData,
+    value: string
+  ) => {
+    handleChange(field, value); 
     validateField(field, value);
-  };    
+  };  
 
     return (
         <div className="space-y-4">

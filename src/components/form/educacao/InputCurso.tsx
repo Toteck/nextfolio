@@ -1,12 +1,18 @@
 // src/components/form/educacao/InputCurso.tsx
+import { InputTextEducacao } from "./InputTextEducacao";
 
-// Este componente é um input controlado para o nome do curso ou formação.
-// Deve seguir a mesma lógica do InputInstituicao.
-// Exemplo de uso: <InputCurso value={edu.curso} onChange={...} />
+interface InputCursoProps {
+  value: string;
+  onChange: (value: string) => void;
+}
 
-export function InputCurso() {
-    return (
-        <>
-        </>
-    )
+export function InputCurso({ value, onChange }: InputCursoProps) {
+  return (
+    <InputTextEducacao
+      label="Curso"
+      value={value}
+      onChange={onChange}
+      placeholder="Ex: Engenharia de Software"
+    />
+  );
 }
