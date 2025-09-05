@@ -54,7 +54,29 @@ export function DadosPessoais() {
     }
   };
 
-  // Validação em tempo real
+  // Contatos extras adicionados pelo usuário
+  const [extraContacts, setExtraContacts] = useState<
+    { type: "email" | "phone" | "linkedin" | "github"; value: string }[]
+  >([]);
+
+  // Funções para adicionar, atualizar e remover contatos extras
+  const addContact = (type: "email" | "phone" | "linkedin" | "github") => {
+    setExtraContacts([...extraContacts, { type, value: "" }]);
+  };
+
+  const updateContact = (index: number, value: string) => {
+    const updated = [...extraContacts];
+    updated[index].value = value;
+    setExtraContacts(updated);
+  };
+
+  const removeContact = (index: number) => {
+    const updated = [...extraContacts];
+    updated.splice(index, 1);
+    setExtraContacts(updated);
+  };
+
+  // Validação em tempo real para campos obrigatórios
   const validateField = (field: string, value: string) => {
     switch (field) {
       case "fullName":
@@ -63,22 +85,20 @@ export function DadosPessoais() {
           fullName: value.trim() === "" ? "Nome obrigatório" : "",
         }));
         break;
-
-        case "email":
-          setErrors((prev) => ({
-            ...prev,
+      case "email":
+        setErrors((prev) => ({
+          ...prev,
           email:
-              value.trim() === ""
+            value.trim() === ""
               ? "Email obrigatório"
               : !EMAIL_REGEX.test(value)
               ? "Formato de email inválido"
               : "",
         }));
         break;
-
-        case "phone":
-          setErrors((prev) => ({
-            ...prev,
+      case "phone":
+        setErrors((prev) => ({
+          ...prev,
           phone:
             value.trim() === ""
               ? "Telefone obrigatório"
@@ -102,6 +122,7 @@ export function DadosPessoais() {
     <div className="space-y-4">
       <h2 className="text-xl font-bold mb-4">Dados Pessoais</h2>
 
+      {/* Nome completo */}
       <InputText
         label="Nome completo *"
         value={personalData.fullName}
@@ -111,7 +132,7 @@ export function DadosPessoais() {
         <span className="text-sm text-red-500">{errors.fullName}</span>
       )}
 
-      {/* Nome Social */}
+      {/* Nome social */}
       <InputText
         label="Nome social"
         value={personalData.socialName}
@@ -129,6 +150,7 @@ export function DadosPessoais() {
         <label className="text-sm text-gray-700">Usar Nome Social</label>
       </div>
 
+      {/* Campos fixos */}
       <InputEmail
         label="Email *"
         value={personalData.email}
@@ -138,7 +160,7 @@ export function DadosPessoais() {
         <span className="text-red-500 text-sm">{errors.email}</span>
       )}
 
-      <InputPhone
+     <InputPhone
         label="Telefone *"
         value={personalData.phone}
         onChange={(value) => {
@@ -146,8 +168,8 @@ export function DadosPessoais() {
           const masked = maskPhoneDigits(digits); // aplica máscara automática
           handleChangeAndValidate("phone", masked); // salva e valida
         }}
-      />
-      {errors.phone && (
+      />     
+     {errors.phone && (
         <span className="text-red-500 text-sm">{errors.phone}</span>
       )}
 
@@ -156,6 +178,84 @@ export function DadosPessoais() {
         value={personalData.linkedin}
         onChange={(value) => handleChange("linkedin", value)}
       />
+
+      {/* Contatos extras */}
+      {extraContacts.map((contact, index) => (
+        <div key={index} className="flex items-end gap-2 ">
+          {contact.type === "email" && (
+            <InputEmail
+              label="Email adicional"
+              value={contact.value}
+              onChange={(val) => updateContact(index, val)}
+            />
+          )}
+          {contact.type === "phone" && (
+            <InputPhone
+              label="Telefone adicional"
+              value={contact.value}
+              onChange={(val) => {
+                const digits = val.replace(/\D/g, "");
+                const masked = maskPhoneDigits(digits);
+                updateContact(index, masked);
+              }}
+            />
+          )}
+          {contact.type === "linkedin" && (
+            <InputLinkedIn
+              label="LinkedIn adicional"
+              value={contact.value}
+              onChange={(val) => updateContact(index, val)}
+            />
+          )}
+          {contact.type === "github" && (
+            <InputText
+              label="GitHub"
+              value={contact.value}
+              onChange={(val) => updateContact(index, val)}
+            />
+          )}
+
+          <button
+            type="button"
+            className="text-red-500 font-bold px-1 py-0.5 text-sm border border-red-500 rounded hover:bg-red-500 hover:text-white transition-colors"
+            onClick={() => removeContact(index)}
+          >
+            Remover
+          </button>
+        </div>
+      ))}
+
+      {/* Botões para adicionar novos contatos */}
+      <div className="flex gap-2 mt-2">
+        <button
+          type="button"
+          className="px-2 py-1 text-sm bg-blue-500 text-white rounded"
+          onClick={() => addContact("email")}
+        >
+          + Email
+        </button>
+        <button
+          type="button"
+          className="px-2 py-1 text-sm bg-blue-500 text-white rounded"
+          onClick={() => addContact("phone")}
+        >
+          + Telefone
+        </button>
+        <button
+          type="button"
+          className="px-2 py-1 text-sm bg-blue-500 text-white rounded"
+          onClick={() => addContact("linkedin")}
+        >
+          + LinkedIn
+        </button>
+        <button
+          type="button"
+          className="px-2 py-1 text-sm bg-blue-500 text-white rounded"
+          onClick={() => addContact("github")}
+        >
+          + GitHub
+        </button>
+      </div>
 
       {/* Resumo profissional com contador de caracteres*/}
       <div className="flex flex-col">
