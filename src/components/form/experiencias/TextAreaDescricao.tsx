@@ -1,7 +1,10 @@
-import { useState } from "react";
+interface TextAreaDescricaoProps {
+  value: string;
+  onChange: (value: string) => void;
+}
 
-export function TextAreaDescricao() {
-  const [resume, setResume] = useState("");
+
+export function TextAreaDescricao({value, onChange}: TextAreaDescricaoProps) {
   
   return (
     <div className="flex flex-col">
@@ -10,12 +13,12 @@ export function TextAreaDescricao() {
       </label>
       <textarea
         placeholder="Descreva suas principais atividades e responsabilidades..."
-        value={resume}
-        onChange={(e) => setResume(e.target.value)}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         maxLength={2000}
         className="border border-black rounded-md px-3 py-2 bg-white focus:outline-none focus:border-blue-500 h-32 resize-none"
       />
-      <span className="text-sm text-gray-500 mt-1">{resume.length}/2000</span>
+      <span className="text-sm text-gray-500 mt-1">{value.length}/2000</span>
     </div>
   );
 }
