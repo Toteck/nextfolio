@@ -1,4 +1,5 @@
 import type { Experiencia } from "../../../context/CurriculoContext";
+import { Button } from "../../Button";
 import { InputCargo } from "./InputCargo";
 import { InputEmpresa } from "./InputEmpresa";
 import { InputPeriodo } from "./InputPeriodo";
@@ -13,10 +14,11 @@ type ExperienciaItemProps = {
 export function ExperienciaItem({item, onChange, onRemove}: ExperienciaItemProps) {
     return (
         <div className="p-4 border rounded-md space-y-4">
-            <InputCargo  />
-            <InputEmpresa />
+            <InputCargo value={item.cargo} onChange={(value) => onChange("cargo", value)} />
+            <InputEmpresa value={item.empresa} onChange={(value) => onChange("empresa", value)}/>
             <InputPeriodo />
-            <TextAreaDescricao />
+            <TextAreaDescricao value={item.cargo} onChange={(value) => onChange("cargo", value)}/>
+            <Button label="Remover Experiência" onClick={() => alert("removendo experiência")} variant="remove"/>
         </div>
     )
 }
