@@ -1,7 +1,7 @@
 import { useResume, type Experiencia } from "../../../context/CurriculoContext";
 import { Button } from "../../Button";
 import { ExperienciaItem } from "./ExperienciaItem";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid"
 
 export function Experiencias() {
   const { experiencia, setExperiencia } = useResume();
