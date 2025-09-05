@@ -164,9 +164,6 @@ export function DadosPessoais() {
           value={personalData.summary}
           onChange={handleResumoChange}
         />
-        <span className="text-sm text-gray-500 mt-1">
-          {charCount}/{maxLength} caracteres
-        </span>
       </div>
     </div>
   );
