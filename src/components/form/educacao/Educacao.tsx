@@ -1,23 +1,25 @@
 import type { Formacao } from "../../../context/CurriculoContext";
 import { useResume } from "../../../context/CurriculoContext";
 import { FormacaoItem } from "./FormacaoItem"
+import { v4 as uuidv4 } from "uuid";
 
 export function Educacao() {
   const { educacao, setEducacao } = useResume();
 
   const generateUniqueId = () => {
-    return `${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    return uuidv4();
   };
 
   const handleAdd = () => {
     setEducacao((prevEducacao) => [
       ...prevEducacao,
       {
-        id: generateUniqueId(), 
+        id: generateUniqueId(),
         instituicao: "",
         curso: "",
         anoInicio: "",
         anoFim: "",
+        status: "",
       },
     ]);
   };

@@ -119,9 +119,9 @@ export function DadosPessoais() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className=" space-y-4">
       <h2 className="text-xl font-bold mb-4">Dados Pessoais</h2>
-
+    <div>
       {/* Nome completo */}
       <InputText
         label="Nome completo *"
@@ -224,6 +224,7 @@ export function DadosPessoais() {
           </button>
         </div>
       ))}
+      </div>
 
       {/* Botões para adicionar novos contatos */}
       <div className="flex gap-2 mt-2">

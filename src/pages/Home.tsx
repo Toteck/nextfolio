@@ -10,10 +10,9 @@ export const Home = () => {
     
     <ResumeProvider>
       <div className="bg-gray-50 min-h-screen p-4 md:p-8 flex justify-center items-center font-sans">
-        <div className="w-full max-w-7xl h-[90vh] grid grid-cols-2 bg-white rounded-3xl shadow-xl overflow-hidden">
+        <div className="w-full grid grid-cols-2 bg-white rounded shadow-xl overflow-hidden">
           {/* Coluna esquerda - Formulário */}
           <div className="p-6 overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Formulário</h2>
             <DadosPessoais />
             <Habilidades />
             <Experiencias />

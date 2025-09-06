@@ -2,6 +2,8 @@ import { InputData } from "./InputPeriodo";
 import { InputInstituicao } from "./InputInstituicao";
 import { InputCurso } from "./InputCurso";
 import { SelectStatusEducacao } from "./SelectStatusEducacao";
+import { Button } from "../../Button";
+import { FaTrash } from "react-icons/fa";
 
 import type { Formacao } from "../../../context/CurriculoContext";
 
@@ -41,13 +43,16 @@ export function FormacaoItem({ item, onChange, onRemove }: FormacaoItemProps) {
         onChange={(value) => onChange("status", value)}
       />
 
-      <button
-        type="button"
-        onClick={onRemove}
-        className="w-full text-red-500 hover:text-red-700"
-      >
-        Remover
-      </button>
+      <div className="flex flex-row justify-end items-end">
+        <Button
+          onClick={onRemove}
+          variant="remove"
+          icon={<FaTrash />}
+          iconOnly={true}
+          label=""
+          tooltip="Remover"
+        />
+      </div>
     </div>
   );
 }
