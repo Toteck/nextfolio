@@ -2,6 +2,7 @@ import type { Formacao } from "../../../context/CurriculoContext";
 import { useResume } from "../../../context/CurriculoContext";
 import { FormacaoItem } from "./FormacaoItem"
 import { v4 as uuidv4 } from "uuid";
+import { Button } from "../../Button";
 
 export function Educacao() {
   const { educacao, setEducacao } = useResume();
@@ -39,7 +40,7 @@ export function Educacao() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mt-10 ">
       <h2 className="text-xl font-bold mb-4">Formação Acadêmica</h2>
       {educacao.map((item) => (
         <FormacaoItem
@@ -49,13 +50,7 @@ export function Educacao() {
           onRemove={() => handleRemove(item.id)}
         />
       ))}
-      <button
-        type="button"
-        onClick={handleAdd}
-        className="w-full text-blue-500 border border-blue-500 rounded p-2 hover:bg-blue-50"
-      >
-        Adicionar Formação
-      </button>
+      <Button label="+ Adicionar Formação" onClick={handleAdd} />
     </div>
   );
 }

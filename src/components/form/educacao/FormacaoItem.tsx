@@ -15,7 +15,7 @@ interface FormacaoItemProps {
 
 export function FormacaoItem({ item, onChange, onRemove }: FormacaoItemProps) {
   return (
-    <div className="p-4 border rounded-md space-y-4">
+    <div className="p-4 space-y-4">
       <InputInstituicao
         value={item.instituicao}
         onChange={(value) => onChange("instituicao", value)}
@@ -37,11 +37,12 @@ export function FormacaoItem({ item, onChange, onRemove }: FormacaoItemProps) {
           onChange={(value) => onChange("anoFim", value)}
         />
       </div>
-
-      <SelectStatusEducacao
-        value={item.status}
-        onChange={(value) => onChange("status", value)}
-      />
+      <div className="w-2/6">
+        <SelectStatusEducacao
+          value={item.status}
+          onChange={(value) => onChange("status", value)}
+        />
+      </div>
 
       <div className="flex flex-row justify-end items-end">
         <Button
