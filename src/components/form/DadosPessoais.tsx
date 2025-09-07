@@ -15,7 +15,7 @@ const PHONE_REGEX = /^\(\d{2}\)\s\d\s\d{4}-\d{4}$/;
 
 // Função para aplicar a máscara de telefone
 function maskPhoneDigits(digits: string): string {
-  const d = digits.replace(/\D/g, "").slice(0, 11); // só números, até 11 dígitos
+  const d = digits.replace(/\D/g, "").slice(0, 11);
   if (d.length === 0) return "";
 
   const area = d.slice(0, 2);
@@ -33,20 +33,37 @@ function maskPhoneDigits(digits: string): string {
 export function DadosPessoais() {
   const { personalData, handleChange } = useResume();
 
-  // contador de caracteres do resumo profissional
   const [charCount, setCharCount] = useState(personalData.summary.length);
   const maxLength = 500;
 
-  // Estado de erros de validação
   const [errors, setErrors] = useState({
     fullName: "",
     email: "",
     phone: "",
   });
 
+  const [extraContacts, setExtraContacts] = useState<
+    { type: "email" | "phone" | "linkedin" | "github"; value: string }[]
+  >([]);
+
+  // ✅ extraErrors sempre sincronizado com extraContacts
+  const [extraErrors, setExtraErrors] = useState<string[]>([]);
+
   useEffect(() => {
     setCharCount(personalData.summary.length);
   }, [personalData.summary]);
+
+  // Sincroniza extraErrors sempre que extraContacts muda
+  useEffect(() => {
+    setExtraErrors(
+      extraContacts.map((contact, index) =>
+        contact.type === "email" && !extraErrors[index]
+          ? ""
+          : extraErrors[index] || ""
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [extraContacts]);
 
   const handleResumoChange = (value: string) => {
     if (value.length <= maxLength) {
@@ -55,29 +72,38 @@ export function DadosPessoais() {
     }
   };
 
-  // Contatos extras adicionados pelo usuário
-  const [extraContacts, setExtraContacts] = useState<
-    { type: "email" | "phone" | "linkedin" | "github"; value: string }[]
-  >([]);
-
-  // Funções para adicionar, atualizar e remover contatos extras
   const addContact = (type: "email" | "phone" | "linkedin" | "github") => {
     setExtraContacts([...extraContacts, { type, value: "" }]);
+    if (type === "email") setExtraErrors([...extraErrors, ""]);
   };
 
   const updateContact = (index: number, value: string) => {
     const updated = [...extraContacts];
     updated[index].value = value;
     setExtraContacts(updated);
+
+    if (updated[index].type === "email") {
+      const newErrors = [...extraErrors];
+      newErrors[index] =
+        value.trim() === ""
+          ? "Email obrigatório"
+          : !EMAIL_REGEX.test(value)
+          ? "Formato de email inválido"
+          : "";
+      setExtraErrors(newErrors);
+    }
   };
 
   const removeContact = (index: number) => {
     const updated = [...extraContacts];
     updated.splice(index, 1);
     setExtraContacts(updated);
+
+    const updatedErrors = [...extraErrors];
+    updatedErrors.splice(index, 1);
+    setExtraErrors(updatedErrors);
   };
 
-  // Validação em tempo real para campos obrigatórios
   const validateField = (field: string, value: string) => {
     switch (field) {
       case "fullName":
@@ -123,7 +149,6 @@ export function DadosPessoais() {
     <div className="flex flex-col gap-4 space-y-4 mb-10">
       <h2 className="text-xl font-bold mb-4">Dados Pessoais</h2>
       <div className="flex flex-col gap-4">
-        {/* Nome completo */}
         <InputText
           label="Nome completo *"
           value={personalData.fullName}
@@ -133,14 +158,12 @@ export function DadosPessoais() {
           <span className="text-sm text-red-500">{errors.fullName}</span>
         )}
 
-        {/* Nome social */}
         <InputText
           label="Nome social"
           value={personalData.socialName}
           onChange={(value) => handleChange("socialName", value)}
         />
 
-        {/* Toggle usar Nome Social */}
         <div className=" m-2 flex items-center gap-2">
           <input
             type="checkbox"
@@ -151,7 +174,6 @@ export function DadosPessoais() {
           <label className="text-sm text-gray-700">Usar Nome Social</label>
         </div>
 
-        {/* Campos fixos */}
         <InputEmail
           label="Email *"
           value={personalData.email}
@@ -165,9 +187,9 @@ export function DadosPessoais() {
           label="Telefone *"
           value={personalData.phone}
           onChange={(value) => {
-            const digits = value.replace(/\D/g, ""); // remove tudo que não for número
-            const masked = maskPhoneDigits(digits); // aplica máscara automática
-            handleChangeAndValidate("phone", masked); // salva e valida
+            const digits = value.replace(/\D/g, "");
+            const masked = maskPhoneDigits(digits);
+            handleChangeAndValidate("phone", masked);
           }}
         />
         {errors.phone && (
@@ -180,15 +202,21 @@ export function DadosPessoais() {
           onChange={(value) => handleChange("linkedin", value)}
         />
 
-        {/* Contatos extras */}
         {extraContacts.map((contact, index) => (
           <div key={index} className="flex flex-row items-center gap-2 ">
             {contact.type === "email" && (
-              <InputEmail
-                label="Email adicional"
-                value={contact.value}
-                onChange={(val) => updateContact(index, val)}
-              />
+              <>
+                <InputEmail
+                  label="Email adicional"
+                  value={contact.value}
+                  onChange={(val) => updateContact(index, val)}
+                />
+                {extraErrors[index] && (
+                  <span className="text-red-500 text-sm">
+                    {extraErrors[index]}
+                  </span>
+                )}
+              </>
             )}
             {contact.type === "phone" && (
               <InputPhone
@@ -223,7 +251,6 @@ export function DadosPessoais() {
               >
                 <FaTrash />
               </button>
-              {}
               <span
                 className="
           absolute bottom-full left-1/2 transform -translate-x-1/2 
@@ -240,7 +267,6 @@ export function DadosPessoais() {
         ))}
       </div>
 
-      {/* Botões para adicionar novos contatos */}
       <div className="flex gap-2 mt-2 justify-start items-center">
         <h2 className="text-sm font-semibold text-gray-700">
           {" "}
@@ -276,7 +302,6 @@ export function DadosPessoais() {
         </button>
       </div>
 
-      {/* Resumo profissional com contador de caracteres*/}
       <div className="flex flex-col">
         <TextAreaResumo
           label="Resumo profissional"
