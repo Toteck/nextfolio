@@ -2,6 +2,8 @@ import { InputData } from "./InputPeriodo";
 import { InputInstituicao } from "./InputInstituicao";
 import { InputCurso } from "./InputCurso";
 import { SelectStatusEducacao } from "./SelectStatusEducacao";
+import { Button } from "../../Button";
+import { FaTrash } from "react-icons/fa";
 
 import type { Formacao } from "../../../context/CurriculoContext";
 
@@ -13,7 +15,7 @@ interface FormacaoItemProps {
 
 export function FormacaoItem({ item, onChange, onRemove }: FormacaoItemProps) {
   return (
-    <div className="p-4 border rounded-md space-y-4">
+    <div className="p-4 space-y-4">
       <InputInstituicao
         value={item.instituicao}
         onChange={(value) => onChange("instituicao", value)}
@@ -35,19 +37,23 @@ export function FormacaoItem({ item, onChange, onRemove }: FormacaoItemProps) {
           onChange={(value) => onChange("anoFim", value)}
         />
       </div>
+      <div className="w-2/6">
+        <SelectStatusEducacao
+          value={item.status}
+          onChange={(value) => onChange("status", value)}
+        />
+      </div>
 
-      <SelectStatusEducacao
-        value={item.status}
-        onChange={(value) => onChange("status", value)}
-      />
-
-      <button
-        type="button"
-        onClick={onRemove}
-        className="w-full text-red-500 hover:text-red-700"
-      >
-        Remover
-      </button>
+      <div className="flex flex-row justify-end items-end">
+        <Button
+          onClick={onRemove}
+          variant="remove"
+          icon={<FaTrash />}
+          iconOnly={true}
+          label=""
+          tooltip="Remover"
+        />
+      </div>
     </div>
   );
 }

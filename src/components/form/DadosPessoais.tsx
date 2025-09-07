@@ -6,6 +6,7 @@ import { InputLinkedIn } from "./inputs/InputLinkedIn";
 import { InputPhone } from "./inputs/InputPhone";
 import { InputText } from "./inputs/InputText";
 import { TextAreaResumo } from "./inputs/TextAreaResumo";
+import { FaTrash } from "react-icons/fa";
 
 // Formato usuario@dominio.com
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -119,138 +120,156 @@ export function DadosPessoais() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4 space-y-4 mb-10">
       <h2 className="text-xl font-bold mb-4">Dados Pessoais</h2>
-
-      {/* Nome completo */}
-      <InputText
-        label="Nome completo *"
-        value={personalData.fullName}
-        onChange={(value) => handleChangeAndValidate("fullName", value)}
-      />
-      {errors.fullName && (
-        <span className="text-sm text-red-500">{errors.fullName}</span>
-      )}
-
-      {/* Nome social */}
-      <InputText
-        label="Nome social"
-        value={personalData.socialName}
-        onChange={(value) => handleChange("socialName", value)}
-      />
-
-      {/* Toggle usar Nome Social */}
-      <div className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          checked={personalData.useSocialName}
-          onChange={(e) => handleChange("useSocialName", e.target.checked)}
-          className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+      <div className="flex flex-col gap-4">
+        {/* Nome completo */}
+        <InputText
+          label="Nome completo *"
+          value={personalData.fullName}
+          onChange={(value) => handleChangeAndValidate("fullName", value)}
         />
-        <label className="text-sm text-gray-700">Usar Nome Social</label>
+        {errors.fullName && (
+          <span className="text-sm text-red-500">{errors.fullName}</span>
+        )}
+
+        {/* Nome social */}
+        <InputText
+          label="Nome social"
+          value={personalData.socialName}
+          onChange={(value) => handleChange("socialName", value)}
+        />
+
+        {/* Toggle usar Nome Social */}
+        <div className=" m-2 flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={personalData.useSocialName}
+            onChange={(e) => handleChange("useSocialName", e.target.checked)}
+            className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+          />
+          <label className="text-sm text-gray-700">Usar Nome Social</label>
+        </div>
+
+        {/* Campos fixos */}
+        <InputEmail
+          label="Email *"
+          value={personalData.email}
+          onChange={(value) => handleChangeAndValidate("email", value)}
+        />
+        {errors.email && (
+          <span className="text-red-500 text-sm">{errors.email}</span>
+        )}
+
+        <InputPhone
+          label="Telefone *"
+          value={personalData.phone}
+          onChange={(value) => {
+            const digits = value.replace(/\D/g, ""); // remove tudo que não for número
+            const masked = maskPhoneDigits(digits); // aplica máscara automática
+            handleChangeAndValidate("phone", masked); // salva e valida
+          }}
+        />
+        {errors.phone && (
+          <span className="text-red-500 text-sm">{errors.phone}</span>
+        )}
+
+        <InputLinkedIn
+          label="LinkedIn"
+          value={personalData.linkedin}
+          onChange={(value) => handleChange("linkedin", value)}
+        />
+
+        {/* Contatos extras */}
+        {extraContacts.map((contact, index) => (
+          <div key={index} className="flex flex-row items-center gap-2 ">
+            {contact.type === "email" && (
+              <InputEmail
+                label="Email adicional"
+                value={contact.value}
+                onChange={(val) => updateContact(index, val)}
+              />
+            )}
+            {contact.type === "phone" && (
+              <InputPhone
+                label="Telefone adicional"
+                value={contact.value}
+                onChange={(val) => {
+                  const digits = val.replace(/\D/g, "");
+                  const masked = maskPhoneDigits(digits);
+                  updateContact(index, masked);
+                }}
+              />
+            )}
+            {contact.type === "linkedin" && (
+              <InputLinkedIn
+                label="LinkedIn adicional"
+                value={contact.value}
+                onChange={(val) => updateContact(index, val)}
+              />
+            )}
+            {contact.type === "github" && (
+              <InputText
+                label="GitHub"
+                value={contact.value}
+                onChange={(val) => updateContact(index, val)}
+              />
+            )}
+            <div className="mt-6 relative inline-block group z-50">
+              <button
+                type="button"
+                className="text-white bg-red-500 font-bold p-2 rounded hover:bg-red-600 hover:text-white transition-colors"
+                onClick={() => removeContact(index)}
+              >
+                <FaTrash />
+              </button>
+              {}
+              <span
+                className="
+          absolute bottom-full left-1/2 transform -translate-x-1/2 
+          bg-gray-800 text-white text-sm rounded-md px-2 py-1 
+          opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+          transition-opacity duration-300 whitespace-nowrap z-50
+          -mb-17
+        "
+              >
+                Remover
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* Campos fixos */}
-      <InputEmail
-        label="Email *"
-        value={personalData.email}
-        onChange={(value) => handleChangeAndValidate("email", value)}
-      />
-      {errors.email && (
-        <span className="text-red-500 text-sm">{errors.email}</span>
-      )}
-
-     <InputPhone
-        label="Telefone *"
-        value={personalData.phone}
-        onChange={(value) => {
-          const digits = value.replace(/\D/g, ""); // remove tudo que não for número
-          const masked = maskPhoneDigits(digits); // aplica máscara automática
-          handleChangeAndValidate("phone", masked); // salva e valida
-        }}
-      />     
-     {errors.phone && (
-        <span className="text-red-500 text-sm">{errors.phone}</span>
-      )}
-
-      <InputLinkedIn
-        label="LinkedIn"
-        value={personalData.linkedin}
-        onChange={(value) => handleChange("linkedin", value)}
-      />
-
-      {/* Contatos extras */}
-      {extraContacts.map((contact, index) => (
-        <div key={index} className="flex items-end gap-2 ">
-          {contact.type === "email" && (
-            <InputEmail
-              label="Email adicional"
-              value={contact.value}
-              onChange={(val) => updateContact(index, val)}
-            />
-          )}
-          {contact.type === "phone" && (
-            <InputPhone
-              label="Telefone adicional"
-              value={contact.value}
-              onChange={(val) => {
-                const digits = val.replace(/\D/g, "");
-                const masked = maskPhoneDigits(digits);
-                updateContact(index, masked);
-              }}
-            />
-          )}
-          {contact.type === "linkedin" && (
-            <InputLinkedIn
-              label="LinkedIn adicional"
-              value={contact.value}
-              onChange={(val) => updateContact(index, val)}
-            />
-          )}
-          {contact.type === "github" && (
-            <InputText
-              label="GitHub"
-              value={contact.value}
-              onChange={(val) => updateContact(index, val)}
-            />
-          )}
-
-          <button
-            type="button"
-            className="text-red-500 font-bold px-1 py-0.5 text-sm border border-red-500 rounded hover:bg-red-500 hover:text-white transition-colors"
-            onClick={() => removeContact(index)}
-          >
-            Remover
-          </button>
-        </div>
-      ))}
-
       {/* Botões para adicionar novos contatos */}
-      <div className="flex gap-2 mt-2">
+      <div className="flex gap-2 mt-2 justify-start items-center">
+        <h2 className="text-sm font-semibold text-gray-700">
+          {" "}
+          Informações Adicionais:
+        </h2>
         <button
           type="button"
-          className="px-2 py-1 text-sm bg-blue-500 text-white rounded"
+          className="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-800"
           onClick={() => addContact("email")}
         >
           + Email
         </button>
         <button
           type="button"
-          className="px-2 py-1 text-sm bg-blue-500 text-white rounded"
+          className="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-800"
           onClick={() => addContact("phone")}
         >
           + Telefone
         </button>
         <button
           type="button"
-          className="px-2 py-1 text-sm bg-blue-500 text-white rounded"
+          className="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-800"
           onClick={() => addContact("linkedin")}
         >
           + LinkedIn
         </button>
         <button
           type="button"
-          className="px-2 py-1 text-sm bg-blue-500 text-white rounded"
+          className="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-800"
           onClick={() => addContact("github")}
         >
           + GitHub

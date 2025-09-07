@@ -24,7 +24,8 @@ export function InputData({ label, value, onChange }: InputDataProps) {
         }}
         showYearPicker
         dateFormat="yyyy"
-        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        className="w-full p-2 border border-gray-300 rounded-md 
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       />
     </div>
   );

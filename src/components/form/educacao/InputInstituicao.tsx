@@ -12,6 +12,7 @@ export function InputInstituicao({ value, onChange }: InputInstituicaoProps) {
       label="Instituição"
       value={value}
       onChange={onChange}
+      placeholder="Ex: Universidade Federal de São Paulo"
     />
   );
 }

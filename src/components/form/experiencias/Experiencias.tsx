@@ -43,7 +43,7 @@ export function Experiencias() {
         <ExperienciaItem key={item.id} item={item} onChange={(field, value) => handleChange(item.id, field, value)}
           onRemove={() => handleRemove(item.id)} />
       ))}
-      <Button label="Adicionar Experiência" onClick={handleAdd} />
+      <Button label="+ Adicionar Experiência" onClick={handleAdd} />
     </div>
   );
 }
