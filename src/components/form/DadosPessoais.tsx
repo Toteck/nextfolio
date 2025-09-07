@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";  
+import React, { useState, useEffect } from "react";
 import { useResume } from "../../context/CurriculoContext";
-import type { ExtraContact } from "../../context/CurriculoContext";
 import { InputEmail } from "./inputs/InputEmail";
 import { InputLinkedIn } from "./inputs/InputLinkedIn";
 import { InputPhone } from "./inputs/InputPhone";
@@ -8,14 +7,13 @@ import { InputText } from "./inputs/InputText";
 import { TextAreaResumo } from "./inputs/TextAreaResumo";
 import { FaTrash } from "react-icons/fa";
 
-// Formato usuario@dominio.com
+// Regex para validar email e telefone
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Formato (00) 0 0000-0000
 const PHONE_REGEX = /^\(\d{2}\)\s\d\s\d{4}-\d{4}$/;
 
-// Função para aplicar a máscara de telefone
+// Função para aplicar máscara de telefone
 function maskPhoneDigits(digits: string): string {
-  const d = digits.replace(/\D/g, "").slice(0, 11); // só números, até 11 dígitos
+  const d = digits.replace(/\D/g, "").slice(0, 11);
   if (d.length === 0) return "";
 
   const area = d.slice(0, 2);
@@ -49,6 +47,13 @@ export function DadosPessoais() {
     setCharCount(personalData.summary.length);
   }, [personalData.summary]);
 
+  // Mantém os erros sincronizados com a lista de contatos extras
+  useEffect(() => {
+    setExtraErrors((prev) =>
+      extraContacts.map((c, i) => prev[i] || "")
+    );
+  }, [extraContacts]);
+
   const handleResumoChange = (value: string) => {
     if (value.length <= maxLength) {
       handleChange("summary", value);
@@ -56,37 +61,43 @@ export function DadosPessoais() {
     }
   };
 
-  // Funções para adicionar, atualizar e remover contatos extras
+  // Adicionar contato extra
   const addContact = (type: "email" | "phone" | "linkedin" | "github") => {
-    setExtraContacts([...extraContacts, { id: crypto.randomUUID(), type, value: "" }]);
-    setExtraErrors([...extraErrors, ""]); // adiciona espaço para erro
+    setExtraContacts([
+      ...extraContacts,
+      { id: crypto.randomUUID(), type, value: "" },
+    ]);
+    setExtraErrors([...extraErrors, ""]);
   };
 
+  // Atualizar contato extra com validação
   const updateContact = (id: string, value: string) => {
-    const updatedContacts = extraContacts.map((c) =>
+    const updated = extraContacts.map((c) =>
       c.id === id ? { ...c, value } : c
     );
-    setExtraContacts(updatedContacts);
+    setExtraContacts(updated);
 
-    // Valida apenas se for e-mail
-    const idx = extraContacts.findIndex((c) => c.id === id);
-    if (idx !== -1 && extraContacts[idx].type === "email") {
+    const idx = updated.findIndex((c) => c.id === id);
+    if (idx !== -1 && updated[idx].type === "email") {
       const newErrors = [...extraErrors];
       newErrors[idx] =
-        value.trim() !== "" && !EMAIL_REGEX.test(value)
+        value.trim() === ""
+          ? "Email obrigatório"
+          : !EMAIL_REGEX.test(value)
           ? "Formato de email inválido"
           : "";
       setExtraErrors(newErrors);
     }
   };
 
+  // Remover contato extra
   const removeContact = (id: string) => {
     const idx = extraContacts.findIndex((c) => c.id === id);
     setExtraContacts(extraContacts.filter((c) => c.id !== id));
     setExtraErrors(extraErrors.filter((_, i) => i !== idx));
   };
 
-  // Validação em tempo real dos campos fixos
+  // Validação dos campos fixos
   const validateField = (field: string, value: string) => {
     switch (field) {
       case "fullName":
@@ -120,7 +131,7 @@ export function DadosPessoais() {
     }
   };
 
-  const handleChangeAndValidate = (field: keyof PersonalData, value: string) => {
+  const handleChangeAndValidate = (field: keyof typeof personalData, value: string) => {
     handleChange(field, value);
     validateField(field as string, value);
   };
@@ -129,7 +140,6 @@ export function DadosPessoais() {
     <div className="flex flex-col gap-4 space-y-4 mb-10">
       <h2 className="text-xl font-bold mb-4">Dados Pessoais</h2>
       <div className="flex flex-col gap-4">
-        {/* Nome completo */}
         <InputText
           label="Nome completo *"
           value={personalData.fullName}
@@ -137,7 +147,6 @@ export function DadosPessoais() {
         />
         {errors.fullName && <span className="text-sm text-red-500">{errors.fullName}</span>}
 
-        {/* Nome social */}
         <InputText
           label="Nome social"
           value={personalData.socialName}
@@ -155,7 +164,6 @@ export function DadosPessoais() {
           <label className="text-sm text-gray-700">Usar Nome Social</label>
         </div>
 
-        {/* Campos fixos */}
         <InputEmail
           label="Email *"
           value={personalData.email}
@@ -224,15 +232,7 @@ export function DadosPessoais() {
                 >
                   <FaTrash />
                 </button>
-                <span
-                  className="
-                    absolute bottom-full left-1/2 transform -translate-x-1/2 
-                    bg-gray-800 text-white text-sm rounded-md px-2 py-1 
-                    opacity-0 invisible group-hover:opacity-100 group-hover:visible 
-                    transition-opacity duration-300 whitespace-nowrap z-50
-                    -mb-17
-                  "
-                >
+                <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-sm rounded-md px-2 py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 whitespace-nowrap z-50 -mb-17">
                   Remover
                 </span>
               </div>
@@ -245,7 +245,7 @@ export function DadosPessoais() {
         ))}
       </div>
 
-      {/* Botões para adicionar novos contatos */}
+      {/* Botões para adicionar informações extras */}
       <div className="flex gap-2 mt-2 justify-start items-center">
         <h2 className="text-sm font-semibold text-gray-700">Informações Adicionais:</h2>
         <button
@@ -278,13 +278,16 @@ export function DadosPessoais() {
         </button>
       </div>
 
-      {/* Resumo profissional com contador de caracteres */}
+      {/* Resumo profissional com contador */}
       <div className="flex flex-col">
         <TextAreaResumo
           label="Resumo profissional"
           value={personalData.summary}
           onChange={handleResumoChange}
         />
+        <span className="text-sm text-gray-500">
+          {charCount}/{maxLength} caracteres
+        </span>
       </div>
     </div>
   );
