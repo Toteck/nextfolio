@@ -34,7 +34,7 @@ export function Button({label, onClick, variant = "primary", icon, iconOnly, too
           {label && <span>{label}</span>}
         </button>
 
-        {/* O Tooltip */}
+        {/* Tooltip */}
         {tooltip && (
           <span
             className="
