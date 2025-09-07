@@ -1,15 +1,21 @@
-// Cabeçalho - Exibir todas as habilidades do usuario
+import React from "react";
+import { useResume } from "../../../context/CurriculoContext";
+
 export function PreviewHabilidades() {
-    return (
-        <div>
-            <h2 className="text-xl font-bold mb-4">Habilidades</h2>
-            {/*Aqui habilidade do usuário serão exibidas como:
-                React - Intermediário
-                Javascript - Avançado
-                Typescript - Intermediário
-                HTML - Avançado
-                CSS - Avançado
-            */}
-        </div>
-    )
+  const { habilidades } = useResume();
+
+  if (habilidades.length === 0) return null;
+
+  return (
+    <div className="p-4 border rounded bg-gray-50 mb-4">
+      <h2 className="text-xl font-bold mb-2">Habilidades</h2>
+      <ul className="text-gray-700 text-sm flex flex-col gap-1">
+        {habilidades.map((hab) => (
+          <li key={hab.id}>
+            <span className="font-semibold">{hab.nome}</span> - {hab.nivel || "Nível não definido"}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }

@@ -1,13 +1,13 @@
-// Estado Global do curriculo
 import React, { createContext, useState, useContext } from "react";
 
+// Tipos principais
 export type Formacao = {
   id: string;
   instituicao: string;
   curso: string;
   anoInicio: string;
   anoFim: string;
-  status: "concluido" | "em_curso" | "incompleto" | ""; // ⬅️ Adicione o novo campo aqui
+  status: "concluido" | "em_curso" | "incompleto" | "";
 };
 
 export type PersonalData = {
@@ -21,14 +21,27 @@ export type PersonalData = {
 };
 
 export type Experiencia = {
-  id: string, 
-  empresa: string,
-  cargo: string, 
-  anoInicio: string,
+  id: string;
+  empresa: string;
+  cargo: string;
+  anoInicio: string;
   anoFim: string;
-  descricaoAtividades: string,
-}
+  descricaoAtividades: string;
+};
 
+export type ExtraContact = {
+  id: string;
+  type: "email" | "phone" | "linkedin" | "github";
+  value: string;
+};
+
+export type Habilidade = {
+  id: string;
+  nome: string;
+  nivel: string;
+};
+
+// Tipo do contexto
 type ResumeContextType = {
   personalData: PersonalData;
   setPersonalData: React.Dispatch<React.SetStateAction<PersonalData>>;
@@ -39,15 +52,20 @@ type ResumeContextType = {
   experiencia: Experiencia[];
   setExperiencia: React.Dispatch<React.SetStateAction<Experiencia[]>>;
 
+  extraContacts: ExtraContact[];
+  setExtraContacts: React.Dispatch<React.SetStateAction<ExtraContact[]>>;
+
+  habilidades: Habilidade[];
+  setHabilidades: React.Dispatch<React.SetStateAction<Habilidade[]>>;
+
   handleChange: (field: keyof PersonalData, value: any) => void;
-  
 };
 
+// Criar contexto
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
 
-export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+// Provider
+export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [personalData, setPersonalData] = useState<PersonalData>({
     fullName: "",
     socialName: "",
@@ -59,14 +77,12 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   const [educacao, setEducacao] = useState<Formacao[]>([]);
+  const [experiencia, setExperiencia] = useState<Experiencia[]>([]);
+  const [extraContacts, setExtraContacts] = useState<ExtraContact[]>([]);
+  const [habilidades, setHabilidades] = useState<Habilidade[]>([]);
 
-  const [experiencia, setExperiencia] = useState<Experiencia[]>([])
-
-  const handleChange = (field: string, value: any) => {
-    setPersonalData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  const handleChange = (field: keyof PersonalData, value: any) => {
+    setPersonalData((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -78,6 +94,10 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({
         setEducacao,
         experiencia,
         setExperiencia,
+        extraContacts,
+        setExtraContacts,
+        habilidades,
+        setHabilidades,
         handleChange,
       }}
     >
@@ -86,10 +106,9 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+// Hook para usar o contexto
 export const useResume = () => {
   const context = useContext(ResumeContext);
-  if (!context)
-    throw new Error("useResume deve ser usado dentro de ResumeProvider");
+  if (!context) throw new Error("useResume deve ser usado dentro de ResumeProvider");
   return context;
 };
-
