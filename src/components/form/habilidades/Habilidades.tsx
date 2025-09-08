@@ -1,7 +1,6 @@
 import { useResume, type Habilidade } from "../../../context/CurriculoContext";
 import { Button } from "../../Button";
 import { HabilidadeItem } from "./HabilidadeItem";
-import { FaPlus } from "react-icons/fa";
 import { v4 as uuidv4 } from "uuid"
 
 export function Habilidades() {
@@ -44,7 +43,7 @@ export function Habilidades() {
             </div>
 
             <div className="flex">
-                <Button label="Adicionar Habilidade" icon={<FaPlus />} tooltip="Adicionar Habilidade" onClick={handleAdd} />
+                <Button label="+ Adicionar Habilidade" tooltip="Adicionar Habilidade" onClick={handleAdd} />
             </div>
         </div>
     )
