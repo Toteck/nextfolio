@@ -10,9 +10,6 @@ export const PreviewResumo: React.FC = () => {
     <div className="p-4 border rounded bg-gray-50 mb-4">
       <h2 className="text-lg font-bold mb-2">Resumo Profissional</h2>
       <p className="text-gray-700 text-sm">{personalData.summary}</p>
-      <p className="text-gray-400 text-xs mt-1">
-        {personalData.summary.length} / 500 caracteres
-      </p>
     </div>
   );
 };
