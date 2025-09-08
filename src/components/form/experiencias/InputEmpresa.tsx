@@ -1,5 +1,3 @@
-
-
 interface InputEmpresaProps {
   value: string;
   onChange: (value: string) => void;
