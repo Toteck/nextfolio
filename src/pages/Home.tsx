@@ -1,3 +1,4 @@
+import React from "react";
 import { DadosPessoais } from "../components/form/DadosPessoais";
 import { Educacao } from "../components/form/educacao/Educacao";
 import { Experiencias } from "../components/form/experiencias/Experiencias";
@@ -7,7 +8,6 @@ import { ResumeProvider } from "../context/CurriculoContext";
 
 export const Home = () => {
   return (
-    
     <ResumeProvider>
       <div className="bg-gray-50 min-h-screen p-4 md:p-8 flex justify-center items-center font-sans">
         <div className="w-full grid grid-cols-2 bg-white rounded shadow-xl overflow-hidden">

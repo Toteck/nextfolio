@@ -1,15 +1,20 @@
-
+import React from "react";
+import { PreviewHeader } from "./PreviewHeader";
+import { PreviewResumo } from "./PreviewResumo";
+import { PreviewExtraContacts } from "./PreviewExtraContacts";
+import { PreviewEducacao } from "./PreviewEducacao";
 import { PreviewExperiencias } from "./PreviewExperiencias";
 import { PreviewHabilidades } from "./PreviewHabilidades";
-import { PreviewHeader } from "./PreviewHeader";
 
-// Preview Geral do curriculo
 export function Preview() {
-    return (
-        <div>
-            <PreviewHeader />
-            <PreviewHabilidades />
-            <PreviewExperiencias />
-        </div>
-    )
+  return (
+    <div className="space-y-4">
+      <PreviewHeader />
+      <PreviewResumo />
+      <PreviewExtraContacts />
+      <PreviewEducacao />
+      <PreviewExperiencias />
+      <PreviewHabilidades />
+    </div>
+  );
 }
