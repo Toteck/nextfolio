@@ -38,8 +38,8 @@ export type ExtraContact = {
 export type Habilidade = {
   id: string;
   nome: string;
-  nivel: string;
-};
+  nivel: "Iniciante" | "Intermediario" | "Avancado";
+}
 
 // Tipo do contexto
 type ResumeContextType = {
