@@ -1,10 +1,10 @@
-import React from "react";
 import { DadosPessoais } from "../components/form/DadosPessoais";
 import { Educacao } from "../components/form/educacao/Educacao";
 import { Experiencias } from "../components/form/experiencias/Experiencias";
 import { Habilidades } from "../components/form/habilidades/Habilidades";
 import { Preview } from "../components/form/preview/Preview";
 import { ResumeProvider } from "../context/CurriculoContext";
+import { PdfExporter } from "../components/ExportPdf/PdfExportButton";
 
 export const Home = () => {
   return (
@@ -23,6 +23,7 @@ export const Home = () => {
           <div className="p-6 overflow-y-auto bg-gray-100">
             <h2 className="text-xl font-bold mb-4">Preview</h2>
             <Preview />
+            <PdfExporter />
           </div>
         </div>
       </div>

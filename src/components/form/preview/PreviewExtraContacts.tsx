@@ -7,7 +7,7 @@ export const PreviewExtraContacts: React.FC = () => {
   if (extraContacts.length === 0) return null;
 
   return (
-    <div className="p-4 border rounded bg-gray-50 mb-4">
+    <div className="p-4 mb-4">
       <h2 className="text-lg font-bold mb-2">Contatos Adicionais</h2>
       <div className="flex flex-col gap-1 text-gray-700 text-sm">
         {extraContacts.map((contact) => {

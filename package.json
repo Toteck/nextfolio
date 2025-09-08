@@ -14,6 +14,7 @@
     "@tailwindcss/vite": "^4.1.12",
     "@types/react-datepicker": "^6.2.0",
     "html2pdf.js": "^0.12.0",
+    "pdfmake": "^0.2.20",
     "react": "^19.1.1",
     "react-datepicker": "^8.7.0",
     "react-dom": "^19.1.1",
@@ -22,6 +23,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@types/html2pdf.js": "^0.10.0",
+    "@types/pdfmake": "^0.2.11",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
