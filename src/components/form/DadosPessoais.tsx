@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useResume } from "../../context/CurriculoContext";
+import { melhorarResumo } from "../../services/aiService";
 import { InputEmail } from "./inputs/InputEmail";
 import { InputLinkedIn } from "./inputs/InputLinkedIn";
 import { InputPhone } from "./inputs/InputPhone";
@@ -12,7 +13,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_REGEX = /^\(\d{2}\)\s\d\s\d{4}-\d{4}$/;
 
 // Função para aplicar máscara de telefone
-function maskPhoneDigits(digits: string): string {
+function maskPhoneDigits(digits) {
   const d = digits.replace(/\D/g, "").slice(0, 11);
   if (d.length === 0) return "";
 
@@ -29,8 +30,9 @@ function maskPhoneDigits(digits: string): string {
 }
 
 export function DadosPessoais() {
-  const { personalData, handleChange, extraContacts, setExtraContacts } = useResume();
+  const { resume, setResume, personalData, handleChange, extraContacts, setExtraContacts } = useResume();
 
+  const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(personalData.summary.length);
   const maxLength = 500;
 
@@ -40,29 +42,33 @@ export function DadosPessoais() {
     phone: "",
   });
 
-  // Erros dos contatos extras
-  const [extraErrors, setExtraErrors] = useState<string[]>([]);
+  const [extraErrors, setExtraErrors] = useState([]);
 
   useEffect(() => {
     setCharCount(personalData.summary.length);
   }, [personalData.summary]);
 
-  // Mantém os erros sincronizados com a lista de contatos extras
   useEffect(() => {
     setExtraErrors((prev) =>
       extraContacts.map((c, i) => prev[i] || "")
     );
   }, [extraContacts]);
 
-  const handleResumoChange = (value: string) => {
+  async function handleMelhorarResumo() {
+    setLoading(true);
+    const textoMelhorado = await melhorarResumo(personalData.summary);
+    handleChange("summary", textoMelhorado);
+    setLoading(false);
+  }
+
+  const handleResumoChange = (value) => {
     if (value.length <= maxLength) {
       handleChange("summary", value);
       setCharCount(value.length);
     }
   };
 
-  // Adicionar contato extra
-  const addContact = (type: "email" | "phone" | "linkedin" | "github") => {
+  const addContact = (type) => {
     setExtraContacts([
       ...extraContacts,
       { id: crypto.randomUUID(), type, value: "" },
@@ -70,8 +76,7 @@ export function DadosPessoais() {
     setExtraErrors([...extraErrors, ""]);
   };
 
-  // Atualizar contato extra com validação
-  const updateContact = (id: string, value: string) => {
+  const updateContact = (id, value) => {
     const updated = extraContacts.map((c) =>
       c.id === id ? { ...c, value } : c
     );
@@ -90,15 +95,13 @@ export function DadosPessoais() {
     }
   };
 
-  // Remover contato extra
-  const removeContact = (id: string) => {
+  const removeContact = (id) => {
     const idx = extraContacts.findIndex((c) => c.id === id);
     setExtraContacts(extraContacts.filter((c) => c.id !== id));
     setExtraErrors(extraErrors.filter((_, i) => i !== idx));
   };
 
-  // Validação dos campos fixos
-  const validateField = (field: string, value: string) => {
+  const validateField = (field, value) => {
     switch (field) {
       case "fullName":
         setErrors((prev) => ({
@@ -131,9 +134,9 @@ export function DadosPessoais() {
     }
   };
 
-  const handleChangeAndValidate = (field: keyof typeof personalData, value: string) => {
+  const handleChangeAndValidate = (field, value) => {
     handleChange(field, value);
-    validateField(field as string, value);
+    validateField(field, value);
   };
 
   return (
@@ -153,7 +156,6 @@ export function DadosPessoais() {
           onChange={(value) => handleChange("socialName", value)}
         />
 
-        {/* Toggle usar Nome Social */}
         <div className="m-2 flex items-center gap-2">
           <input
             type="checkbox"
@@ -188,7 +190,6 @@ export function DadosPessoais() {
           onChange={(value) => handleChange("linkedin", value)}
         />
 
-        {/* Contatos extras */}
         {extraContacts.map((contact, index) => (
           <div key={contact.id} className="flex flex-col gap-1">
             <div className="flex flex-row items-center gap-2">
@@ -237,7 +238,6 @@ export function DadosPessoais() {
                 </span>
               </div>
             </div>
-            {/* Erro do contato extra */}
             {extraErrors[index] && (
               <span className="text-red-500 text-sm">{extraErrors[index]}</span>
             )}
@@ -245,7 +245,6 @@ export function DadosPessoais() {
         ))}
       </div>
 
-      {/* Botões para adicionar informações extras */}
       <div className="flex gap-2 mt-2 justify-start items-center">
         <h2 className="text-sm font-semibold text-gray-700">Informações Adicionais:</h2>
         <button
@@ -278,13 +277,24 @@ export function DadosPessoais() {
         </button>
       </div>
 
-      {/* Resumo profissional com contador */}
       <div className="flex flex-col">
         <TextAreaResumo
           label="Resumo profissional"
           value={personalData.summary}
           onChange={handleResumoChange}
         />
+        <div className="flex items-center justify-between mt-2">
+          <span className="text-sm text-gray-500">
+            {charCount}/{maxLength} caracteres
+          </span>
+          <button
+            onClick={handleMelhorarResumo}
+            disabled={loading}
+            className="px-4 py-2 text-sm bg-purple-500 text-white rounded hover:bg-purple-800 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "⏳ Melhorando..." : "✨ Melhorar com IA"}
+          </button>
+        </div>
       </div>
     </div>
   );
