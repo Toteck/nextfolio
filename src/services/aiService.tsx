@@ -8,7 +8,7 @@ if (!API_KEY) {
 }
 
 const genAI = new GoogleGenerativeAI(API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // Função centralizada para fazer a chamada à API com tratamento de erro
 async function generateText(prompt: string, fallbackText: string): Promise<string> {
@@ -20,7 +20,7 @@ async function generateText(prompt: string, fallbackText: string): Promise<strin
   } catch (error) {
     console.error("Erro ao gerar conteúdo com a API do Gemini:", error);
     // Retorna o texto original (fallback) em caso de erro.
-    return fallbackText; 
+    return fallbackText;
   }
 }
 
