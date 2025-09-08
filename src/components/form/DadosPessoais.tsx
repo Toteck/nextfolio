@@ -13,6 +13,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Formato (00) 0 0000-0000
 const PHONE_REGEX = /^\(\d{2}\)\s\d\s\d{4}-\d{4}$/;
 
+
 // Função para aplicar a máscara de telefone
 function maskPhoneDigits(digits: string): string {
   const d = digits.replace(/\D/g, "").slice(0, 11); // só números, até 11 dígitos
