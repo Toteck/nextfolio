@@ -38,7 +38,7 @@ export type ExtraContact = {
 export type Habilidade = {
   id: string;
   nome: string;
-  nivel: "Iniciante" | "Intermediário" | "Avançado";
+  nivel: "Iniciante" | "Intermediario" | "Avancado";
 }
 
 // Tipo do contexto
