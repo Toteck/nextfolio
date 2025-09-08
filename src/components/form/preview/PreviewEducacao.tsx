@@ -7,7 +7,7 @@ export function PreviewEducacao() {
   if (educacao.length === 0) return null;
 
   return (
-    <div className="p-4 border rounded bg-gray-50 mb-4">
+    <div className="p-4 mb-4">
       <h2 className="text-xl font-bold mb-2">Educação</h2>
       <div className="flex flex-col gap-3">
         {educacao.map((formacao) => (

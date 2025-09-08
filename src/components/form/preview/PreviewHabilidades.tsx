@@ -7,7 +7,7 @@ export function PreviewHabilidades() {
   if (habilidades.length === 0) return null;
 
   return (
-    <div className="p-4 border rounded bg-gray-50 mb-4">
+    <div className="p-4 mb-4">
       <h2 className="text-xl font-bold mb-2">Habilidades</h2>
       <ul className="text-gray-700 text-sm flex flex-col gap-1">
         {habilidades.map((hab) => (

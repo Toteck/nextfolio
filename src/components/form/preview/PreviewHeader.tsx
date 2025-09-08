@@ -5,7 +5,7 @@ export function PreviewHeader() {
   const { personalData } = useResume();
 
   return (
-    <div className="p-4 border rounded bg-gray-50 mb-4">
+    <div className="p-4 mb-4">
       <h2 className="text-xl font-bold mb-2">Dados Pessoais</h2>
       <p className="text-lg font-semibold">
         {personalData.useSocialName && personalData.socialName
